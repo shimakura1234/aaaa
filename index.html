@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic-Tac-Toe</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    .board {
+        display: inline-block;
+        border-collapse: collapse;
+    }
+    .board td {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #000;
+        font-size: 36px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<h1>Tic-Tac-Toe</h1>
+<table class="board">
+    <tr>
+        <td id="cell-0"></td>
+        <td id="cell-1"></td>
+        <td id="cell-2"></td>
+    </tr>
+    <tr>
+        <td id="cell-3"></td>
+        <td id="cell-4"></td>
+        <td id="cell-5"></td>
+    </tr>
+    <tr>
+        <td id="cell-6"></td>
+        <td id="cell-7"></td>
+        <td id="cell-8"></td>
+    </tr>
+</table>
+
+<script>
+    var currentPlayer = 'X';
+    var cells = document.querySelectorAll('.board td');
+
+    cells.forEach(function(cell) {
+        cell.addEventListener('click', function() {
+            if (!cell.textContent) {
+                cell.textContent = currentPlayer;
+                if (checkWin()) {
+                    alert(currentPlayer + ' wins!');
+                    resetBoard();
+                } else if (checkDraw()) {
+                    alert('Draw!');
+                    resetBoard();
+                } else {
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            }
+        });
+    });
+
+    function checkWin() {
+        var winConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+            [0, 4, 8], [2, 4, 6] // diagonals
+        ];
+        return winConditions.some(function(condition) {
+            return condition.every(function(index) {
+                return cells[index].textContent === currentPlayer;
+            });
+        });
+    }
+
+    function checkDraw() {
+        return [...cells].every(cell => cell.textContent);
+    }
+
+    function resetBoard() {
+        cells.forEach(function(cell) {
+            cell.textContent = '';
+        });
+        currentPlayer = 'X';
+    }
+</script>
+</body>
+</html>
